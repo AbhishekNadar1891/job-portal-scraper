@@ -20,7 +20,8 @@ class CSVStorage:
                     "experience",
                     "location",
                     "skills",
-                    "link"
+                    "link",
+                    "scraped_timestamp"
                 ]
             )
 
@@ -34,7 +35,8 @@ class CSVStorage:
                     "experience": job["experience"],
                     "location": job["location"],
                     "skills": ", ".join(job["skills"]),
-                    "link": job["link"]
+                    "link": job["link"],
+                    "scraped_timestamp": job["scraped_timestamp"]
                 })
 
         print(f"\nSaved {len(jobs)} jobs to {filepath}")
