@@ -1,17 +1,33 @@
-import requests
-from config import HEADERS, REQUEST_TIMEOUT
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+import time
 
 
 class HttpClient:
 
-    def get(self, url):
+    def __init__(self):
 
-        response = requests.get(
-            url,
-            headers=HEADERS,
-            timeout=REQUEST_TIMEOUT
+        options = Options()
+
+        options.add_argument("--start-maximized")
+
+        self.driver = webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()),
+            options=options
         )
 
-        response.raise_for_status()
+    def get(self, url):
 
-        return response
+        self.driver.get(url)
+
+        # Wait for page to load
+        time.sleep(10)
+
+        return self.driver.page_source
+
+    def close(self):
+
+        self.driver.quit()

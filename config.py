@@ -1,4 +1,4 @@
-BASE_URL = "https://remoteok.com/remote-dev-jobs"
+BASE_URL = "https://www.naukri.com/python-development-jobs-in-bengaluru?k=python%20development&l=bengaluru"
 
 HEADERS = {
     "User-Agent": (

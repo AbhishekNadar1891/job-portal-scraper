@@ -2,9 +2,7 @@ from scraper.remoteok_scraper import RemoteOKScraper
 
 
 def main():
-
     scraper = RemoteOKScraper()
-
     scraper.scrape()
 
 
