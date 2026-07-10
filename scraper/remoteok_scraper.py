@@ -3,6 +3,10 @@ from bs4 import BeautifulSoup
 from scraper.http_client import HttpClient
 from config import MAX_PAGES
 
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
+
 
 class RemoteOKScraper:
 
@@ -13,7 +17,7 @@ class RemoteOKScraper:
 
         all_jobs = []
 
-        # Build the base URL dynamically from the keyword
+        # Build the search URL dynamically
         base_url = f"https://www.naukri.com/{keyword}-jobs?k={keyword}"
 
         for page in range(1, MAX_PAGES + 1):
@@ -29,6 +33,9 @@ class RemoteOKScraper:
             print(f"\nScraping Page {page}")
             print(url)
 
+            logger.info(f"Scraping page {page}")
+            logger.info(f"URL: {url}")
+
             html = self.client.get(url)
 
             soup = BeautifulSoup(html, "lxml")
@@ -37,6 +44,8 @@ class RemoteOKScraper:
 
             print(f"Jobs Found : {len(jobs)}")
             print("=" * 100)
+
+            logger.info(f"Page {page}: {len(jobs)} jobs found")
 
             for job in jobs:
 
