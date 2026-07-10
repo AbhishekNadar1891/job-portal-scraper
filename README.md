@@ -63,6 +63,7 @@ job-portal-scraper/
 |
 |-- scraper/
 |   |-- __init__.py
+|   |-- base_scraper.py
 |   |-- http_client.py
 |   `-- naukri_scraper.py
 |
@@ -209,6 +210,8 @@ output/scraper.log
 ## Scraping Approach and Limitations
 
 Naukri search results are JavaScript-rendered, so Selenium is used to load each page before parsing the final HTML with BeautifulSoup. The scraper runs pages sequentially because the assignment scope is small and sequential navigation is more stable and respectful for a public job portal than opening multiple browser sessions.
+
+The scraper module includes a small `BaseScraper` contract so additional portals can be added later while returning the same structured job fields used by the existing storage classes.
 
 Use this scraper responsibly and review Naukri's Terms of Service before running it at scale. The extracted fields depend on what Naukri exposes on the search results page, so optional fields such as salary, work mode, and employment type may be unavailable for some listings.
 

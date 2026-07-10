@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
 
+from scraper.base_scraper import BaseScraper
 from scraper.http_client import HttpClient
 from config import MAX_PAGES
 
@@ -39,7 +40,7 @@ def infer_work_mode_from_location(location):
     return None
 
 
-class NaukriScraper:
+class NaukriScraper(BaseScraper):
 
     def __init__(self):
         self.client = HttpClient()
