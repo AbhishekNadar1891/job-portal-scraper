@@ -32,6 +32,11 @@ def main():
 
         logger.info("SQLite database updated successfully")
 
+        json_storage = JSONStorage()
+        json_storage.save(jobs, f"{keyword}_jobs.json")
+
+        logger.info("JSON exported successfully")
+
     except Exception:
 
         logger.exception("Unexpected error occurred")
