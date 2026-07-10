@@ -13,3 +13,5 @@ REQUEST_TIMEOUT = 15
 OUTPUT_DIR = "output"
 
 MAX_PAGES = 3
+
+LOG_FILE = "scraper.log"

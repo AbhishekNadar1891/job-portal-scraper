@@ -23,7 +23,7 @@ class HttpClient:
 
         self.driver.get(url)
 
-        # Wait for page to load
+        # Wait for JavaScript to fully render the page
         time.sleep(10)
 
         return self.driver.page_source
