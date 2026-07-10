@@ -1,30 +1,11 @@
-import requests
-from bs4 import BeautifulSoup
+from scraper.remoteok_scraper import RemoteOKScraper
 
 
 def main():
-    url = "https://example.com"
 
-    try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
+    scraper = RemoteOKScraper()
 
-        soup = BeautifulSoup(response.text, "lxml")
-
-        print("=" * 50)
-        print("TITLE")
-        print(soup.title.text)
-
-        print("=" * 50)
-        print("H1")
-        print(soup.find("h1").text)
-
-        print("=" * 50)
-        print("P")
-        print(soup.find("p").text)
-
-    except Exception as e:
-        print(e)
+    scraper.scrape()
 
 
 if __name__ == "__main__":
