@@ -5,7 +5,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 import time
 
-from config import REQUEST_TIMEOUT
+from config import REQUEST_TIMEOUT, MAX_RETRIES
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class HttpClient:
@@ -23,12 +26,30 @@ class HttpClient:
 
     def get(self, url):
 
-        self.driver.get(url)
+        for attempt in range(1, MAX_RETRIES + 1):
 
-        # Wait for JavaScript to fully render the page
-        time.sleep(REQUEST_TIMEOUT)
+            try:
 
-        return self.driver.page_source
+                self.driver.get(url)
+
+                # Allow JavaScript to render the page
+                time.sleep(REQUEST_TIMEOUT)
+
+                return self.driver.page_source
+
+            except Exception as e:
+
+                logger.warning(
+                    f"Attempt {attempt}/{MAX_RETRIES} failed: {e}"
+                )
+
+                if attempt == MAX_RETRIES:
+                    logger.exception("Maximum retry limit reached")
+                    raise
+
+                print(f"Retrying... ({attempt}/{MAX_RETRIES})")
+
+                time.sleep(2)
 
     def close(self):
 
