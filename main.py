@@ -1,4 +1,4 @@
-from scraper.remoteok_scraper import RemoteOKScraper
+from scraper.naukri_scraper import NaukriScraper
 from storage.csv_storage import CSVStorage
 from storage.sqlite_storage import SQLiteStorage
 from storage.json_storage import JSONStorage
@@ -17,7 +17,7 @@ def main():
 
         logger.info(f"Started scraping for keyword: {keyword}")
 
-        scraper = RemoteOKScraper()
+        scraper = NaukriScraper()
 
         jobs = scraper.scrape(keyword)
 
