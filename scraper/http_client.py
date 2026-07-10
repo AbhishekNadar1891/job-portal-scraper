@@ -5,6 +5,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 import time
 
+from config import REQUEST_TIMEOUT
+
 
 class HttpClient:
 
@@ -24,7 +26,7 @@ class HttpClient:
         self.driver.get(url)
 
         # Wait for JavaScript to fully render the page
-        time.sleep(10)
+        time.sleep(REQUEST_TIMEOUT)
 
         return self.driver.page_source
 
