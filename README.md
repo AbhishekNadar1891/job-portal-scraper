@@ -166,6 +166,12 @@ Sample CSV columns:
 title,company,experience,location,skills,link,salary,employment_type,posted_date,work_mode,job_description,scraped_timestamp
 ```
 
+Example CSV row:
+
+```text
+Python Developer,Persistent,3-7 Yrs,Bengaluru,"python development, css, bootstrap, jquery, sql, git",https://www.naukri.com/job-listings-example,N/A,Not specified,4 days ago,Not specified,"Example job description snippet...",2026-07-10 22:50:25
+```
+
 ---
 
 ## SQLite Database
@@ -207,6 +213,28 @@ output/scraper.log
 
 ---
 
+## Screenshots
+
+Terminal execution screenshot:
+
+```text
+screenshots/terminal_run.png
+```
+
+---
+
+## Manual Verification
+
+The project was manually checked using:
+
+```bash
+python -m compileall main.py config.py scraper storage utils
+```
+
+A scraper run creates CSV, JSON, Excel, SQLite, and log outputs in the `output/` directory. No automated test suite is currently included.
+
+---
+
 ## Scraping Approach and Limitations
 
 Naukri search results are JavaScript-rendered, so Selenium is used to load each page before parsing the final HTML with BeautifulSoup. The scraper runs pages sequentially because the assignment scope is small and sequential navigation is more stable and respectful for a public job portal than opening multiple browser sessions.
@@ -217,7 +245,7 @@ Use this scraper responsibly and review Naukri's Terms of Service before running
 
 Known limitations:
 
-- Employment type defaults to `Not specified` when it is not available on the search result card.
+- Employment type is included in every output and defaults to `Not specified` when it is not visible on the Naukri search result card.
 - Job descriptions are extracted from the search result snippet, not from each full job detail page.
 - Keyword handling is intended for simple text keywords such as `python`, `java`, or `django`.
 - The scraper depends on Naukri's current HTML structure, so selector changes on the website may require code updates.

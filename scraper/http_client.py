@@ -1,6 +1,10 @@
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 import time
@@ -32,8 +36,17 @@ class HttpClient:
 
                 self.driver.get(url)
 
-                # Allow JavaScript to render the page
-                time.sleep(REQUEST_TIMEOUT)
+                try:
+                    WebDriverWait(self.driver, REQUEST_TIMEOUT).until(
+                        EC.presence_of_all_elements_located(
+                            (By.CLASS_NAME, "srp-jobtuple-wrapper")
+                        )
+                    )
+                except TimeoutException:
+                    logger.warning(
+                        "Job cards did not appear before timeout; "
+                        "returning current page source"
+                    )
 
                 return self.driver.page_source
 
