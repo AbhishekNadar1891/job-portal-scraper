@@ -22,69 +22,79 @@ class RemoteOKScraper:
 
         for page in range(1, MAX_PAGES + 1):
 
-            if page == 1:
-                url = base_url
-            else:
-                url = base_url.replace(
-                    f"{keyword}-jobs",
-                    f"{keyword}-jobs-{page}"
-                )
+            try:
 
-            print(f"\nScraping Page {page}")
-            print(url)
+                if page == 1:
+                    url = base_url
+                else:
+                    url = base_url.replace(
+                        f"{keyword}-jobs",
+                        f"{keyword}-jobs-{page}"
+                    )
 
-            logger.info(f"Scraping page {page}")
-            logger.info(f"URL: {url}")
+                print(f"\nScraping Page {page}")
+                print(url)
 
-            html = self.client.get(url)
+                logger.info(f"Scraping page {page}")
+                logger.info(f"URL: {url}")
 
-            soup = BeautifulSoup(html, "lxml")
+                html = self.client.get(url)
 
-            jobs = soup.find_all("div", class_="srp-jobtuple-wrapper")
+                soup = BeautifulSoup(html, "lxml")
 
-            print(f"Jobs Found : {len(jobs)}")
-            print("=" * 100)
+                jobs = soup.find_all("div", class_="srp-jobtuple-wrapper")
 
-            logger.info(f"Page {page}: {len(jobs)} jobs found")
+                print(f"Jobs Found : {len(jobs)}")
+                print("=" * 100)
 
-            for job in jobs:
+                logger.info(f"Page {page}: {len(jobs)} jobs found")
 
-                title = "N/A"
-                company = "N/A"
-                experience = "N/A"
-                location = "N/A"
-                link = "N/A"
-                skills = []
+                for job in jobs:
 
-                title_tag = job.find("a", class_="title")
-                if title_tag:
-                    title = title_tag.get_text(strip=True)
-                    link = title_tag.get("href")
+                    title = "N/A"
+                    company = "N/A"
+                    experience = "N/A"
+                    location = "N/A"
+                    link = "N/A"
+                    skills = []
 
-                company_tag = job.find("a", class_="comp-name")
-                if company_tag:
-                    company = company_tag.get_text(strip=True)
+                    title_tag = job.find("a", class_="title")
+                    if title_tag:
+                        title = title_tag.get_text(strip=True)
+                        link = title_tag.get("href")
 
-                exp_tag = job.find("span", class_="expwdth")
-                if exp_tag:
-                    experience = exp_tag.get_text(strip=True)
+                    company_tag = job.find("a", class_="comp-name")
+                    if company_tag:
+                        company = company_tag.get_text(strip=True)
 
-                location_tag = job.find("span", class_="locWdth")
-                if location_tag:
-                    location = location_tag.get_text(strip=True)
+                    exp_tag = job.find("span", class_="expwdth")
+                    if exp_tag:
+                        experience = exp_tag.get_text(strip=True)
 
-                tag_elements = job.find_all("li", class_="tag-li")
-                skills = [tag.get_text(strip=True) for tag in tag_elements]
+                    location_tag = job.find("span", class_="locWdth")
+                    if location_tag:
+                        location = location_tag.get_text(strip=True)
 
-                job_data = {
-                    "title": title,
-                    "company": company,
-                    "experience": experience,
-                    "location": location,
-                    "skills": skills,
-                    "link": link
-                }
+                    tag_elements = job.find_all("li", class_="tag-li")
+                    skills = [tag.get_text(strip=True) for tag in tag_elements]
 
-                all_jobs.append(job_data)
+                    job_data = {
+                        "title": title,
+                        "company": company,
+                        "experience": experience,
+                        "location": location,
+                        "skills": skills,
+                        "link": link
+                    }
+
+                    all_jobs.append(job_data)
+
+            except Exception:
+
+                logger.exception(f"Failed to scrape page {page}")
+
+                print(f"Skipping Page {page}")
+
+                continue
 
         return all_jobs
