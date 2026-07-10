@@ -23,6 +23,10 @@ def main():
 
         logger.info(f"Scraped {len(jobs)} jobs")
 
+        scraper.client.close()
+
+        logger.info("Browser closed")
+
         csv_storage = CSVStorage()
         csv_storage.save(jobs, f"{keyword}_jobs.csv")
 

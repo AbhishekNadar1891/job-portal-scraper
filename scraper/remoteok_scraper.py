@@ -84,6 +84,13 @@ class RemoteOKScraper:
                     if location_tag:
                         location = location_tag.get_text(strip=True)
 
+                    # Salary
+                    salary_wrap = job.find("span", class_="sal-wrap")
+                    if salary_wrap:
+                        salary_text = salary_wrap.find("span", title=True)
+                        if salary_text:
+                            salary = salary_text.get_text(strip=True)
+
                     posted_date_tag = job.find("span", class_="job-post-day")
                     if posted_date_tag:
                         posted_date = posted_date_tag.get_text(strip=True)

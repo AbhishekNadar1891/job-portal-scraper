@@ -16,6 +16,8 @@ class SQLiteStorage:
 
         cursor = connection.cursor()
 
+        inserted_jobs = 0
+
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS jobs (
 
@@ -54,8 +56,11 @@ class SQLiteStorage:
 
             ))
 
+            if cursor.rowcount == 1:
+                inserted_jobs += 1
+
         connection.commit()
 
         connection.close()
 
-        print(f"Saved {len(jobs)} jobs to {database_path}")
+        print(f"Inserted {inserted_jobs} new jobs into {database_path}")
