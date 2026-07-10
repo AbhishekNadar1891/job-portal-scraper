@@ -12,55 +12,75 @@ class SQLiteStorage:
 
         database_path = os.path.join(OUTPUT_DIR, database_name)
 
-        connection = sqlite3.connect(database_path)
-
-        cursor = connection.cursor()
-
         inserted_jobs = 0
 
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS jobs (
+        with sqlite3.connect(database_path) as connection:
 
-                title TEXT,
-                company TEXT,
-                experience TEXT,
-                location TEXT,
-                skills TEXT,
-                link TEXT UNIQUE,
-                salary TEXT,
-                posted_date TEXT,
-                work_mode TEXT,
-                job_description TEXT,
-                scraped_timestamp TEXT
-            )
-        """)
-
-        for job in jobs:
+            cursor = connection.cursor()
 
             cursor.execute("""
-                INSERT OR IGNORE INTO jobs
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (
+                CREATE TABLE IF NOT EXISTS jobs (
 
-                job["title"],
-                job["company"],
-                job["experience"],
-                job["location"],
-                ", ".join(job["skills"]),
-                job["link"],
-                job["salary"],
-                job["posted_date"],
-                job["work_mode"],
-                job["job_description"],
-                job["scraped_timestamp"]
+                    title TEXT,
+                    company TEXT,
+                    experience TEXT,
+                    location TEXT,
+                    skills TEXT,
+                    link TEXT UNIQUE,
+                    salary TEXT,
+                    employment_type TEXT,
+                    posted_date TEXT,
+                    work_mode TEXT,
+                    job_description TEXT,
+                    scraped_timestamp TEXT
+                )
+            """)
 
-            ))
+            cursor.execute("PRAGMA table_info(jobs)")
+            existing_columns = [column[1] for column in cursor.fetchall()]
 
-            if cursor.rowcount == 1:
-                inserted_jobs += 1
+            if "employment_type" not in existing_columns:
+                cursor.execute(
+                    "ALTER TABLE jobs "
+                    "ADD COLUMN employment_type TEXT DEFAULT 'Not specified'"
+                )
 
-        connection.commit()
+            for job in jobs:
 
-        connection.close()
+                cursor.execute("""
+                    INSERT OR IGNORE INTO jobs (
+                        title,
+                        company,
+                        experience,
+                        location,
+                        skills,
+                        link,
+                        salary,
+                        employment_type,
+                        posted_date,
+                        work_mode,
+                        job_description,
+                        scraped_timestamp
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+
+                    job["title"],
+                    job["company"],
+                    job["experience"],
+                    job["location"],
+                    ", ".join(job["skills"]),
+                    job["link"],
+                    job["salary"],
+                    job["employment_type"],
+                    job["posted_date"],
+                    job["work_mode"],
+                    job["job_description"],
+                    job["scraped_timestamp"]
+
+                ))
+
+                if cursor.rowcount == 1:
+                    inserted_jobs += 1
 
         print(f"Inserted {inserted_jobs} new jobs into {database_path}")

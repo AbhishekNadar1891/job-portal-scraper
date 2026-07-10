@@ -93,6 +93,7 @@ class NaukriScraper:
                     skills = []
 
                     salary = "N/A"
+                    employment_type = "Not specified"
                     posted_date = "N/A"
                     work_mode = "Not specified"
                     job_description = "N/A"
@@ -154,6 +155,7 @@ class NaukriScraper:
                         "skills": skills,
                         "link": link,
                         "salary": salary,
+                        "employment_type": employment_type,
                         "posted_date": posted_date,
                         "work_mode": work_mode,
                         "job_description": job_description,
