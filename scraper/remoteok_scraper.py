@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 from scraper.http_client import HttpClient
-from config import BASE_URL, MAX_PAGES
+from config import MAX_PAGES
 
 
 class RemoteOKScraper:
@@ -9,16 +9,22 @@ class RemoteOKScraper:
     def __init__(self):
         self.client = HttpClient()
 
-    def scrape(self):
+    def scrape(self, keyword):
 
         all_jobs = []
+
+        # Build the base URL dynamically from the keyword
+        base_url = f"https://www.naukri.com/{keyword}-jobs?k={keyword}"
 
         for page in range(1, MAX_PAGES + 1):
 
             if page == 1:
-                url = BASE_URL
+                url = base_url
             else:
-                url = BASE_URL.replace("python-jobs", f"python-jobs-{page}")
+                url = base_url.replace(
+                    f"{keyword}-jobs",
+                    f"{keyword}-jobs-{page}"
+                )
 
             print(f"\nScraping Page {page}")
             print(url)
