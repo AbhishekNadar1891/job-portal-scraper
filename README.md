@@ -125,3 +125,71 @@ The scraper automatically:
 - Stores results in multiple formats
 
 ---
+
+## Output Formats
+
+The scraper exports job listings in multiple formats:
+
+- CSV (`output/<keyword>_jobs.csv`)
+- JSON (`output/<keyword>_jobs.json`)
+- Excel (`output/<keyword>_jobs.xlsx`)
+- SQLite Database (`output/jobs.db`)
+
+---
+
+## SQLite Database
+
+The SQLite database stores job listings while preventing duplicate entries using the job URL as a unique identifier.
+
+Stored fields:
+
+- Title
+- Company
+- Experience
+- Location
+- Skills
+- Salary
+- Posted Date
+- Work Mode
+- Job Description
+- Job URL
+- Scraped Timestamp
+
+---
+
+## Logging
+
+The application logs important events including:
+
+- Scraping progress
+- Pages visited
+- Number of jobs scraped
+- Export status
+- Errors and exceptions
+
+Logs are stored in:
+
+```text
+scraper.log
+```
+
+---
+
+## Future Improvements
+
+Possible enhancements include:
+
+- Support for additional job portals
+- Concurrent scraping of job detail pages
+- Configurable output formats
+- Advanced filtering options
+- Scheduled scraping
+- Dashboard for analytics
+
+---
+
+## Author
+
+**Abhishek Nadar**
+
+GitHub: [AbhishekNadar1891](https://github.com/AbhishekNadar1891)
