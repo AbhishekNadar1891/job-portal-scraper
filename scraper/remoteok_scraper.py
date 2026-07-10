@@ -16,6 +16,7 @@ class RemoteOKScraper:
     def scrape(self, keyword):
 
         all_jobs = []
+        seen_links = set()
 
         # Build the search URL dynamically
         base_url = f"https://www.naukri.com/{keyword}-jobs?k={keyword}"
@@ -77,6 +78,12 @@ class RemoteOKScraper:
 
                     tag_elements = job.find_all("li", class_="tag-li")
                     skills = [tag.get_text(strip=True) for tag in tag_elements]
+
+                    # Skip duplicate job postings
+                    if link in seen_links:
+                        continue
+
+                    seen_links.add(link)
 
                     job_data = {
                         "title": title,
