@@ -24,7 +24,11 @@ class SQLiteStorage:
                 experience TEXT,
                 location TEXT,
                 skills TEXT,
-                link TEXT,
+                link TEXT UNIQUE,
+                salary TEXT,
+                posted_date TEXT,
+                work_mode TEXT,
+                job_description TEXT,
                 scraped_timestamp TEXT
             )
         """)
@@ -32,8 +36,8 @@ class SQLiteStorage:
         for job in jobs:
 
             cursor.execute("""
-                INSERT INTO jobs
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                INSERT OR IGNORE INTO jobs
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
 
                 job["title"],
@@ -42,6 +46,10 @@ class SQLiteStorage:
                 job["location"],
                 ", ".join(job["skills"]),
                 job["link"],
+                job["salary"],
+                job["posted_date"],
+                job["work_mode"],
+                job["job_description"],
                 job["scraped_timestamp"]
 
             ))

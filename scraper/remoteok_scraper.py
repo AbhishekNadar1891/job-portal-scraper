@@ -62,6 +62,11 @@ class RemoteOKScraper:
                     link = "N/A"
                     skills = []
 
+                    salary = "N/A"
+                    posted_date = "N/A"
+                    work_mode = "N/A"
+                    job_description = "N/A"
+
                     title_tag = job.find("a", class_="title")
                     if title_tag:
                         title = title_tag.get_text(strip=True)
@@ -79,8 +84,20 @@ class RemoteOKScraper:
                     if location_tag:
                         location = location_tag.get_text(strip=True)
 
+                    posted_date_tag = job.find("span", class_="job-post-day")
+                    if posted_date_tag:
+                        posted_date = posted_date_tag.get_text(strip=True)
+
                     tag_elements = job.find_all("li", class_="tag-li")
                     skills = [tag.get_text(strip=True) for tag in tag_elements]
+
+                    description_tag = job.find("span", class_="job-desc")
+                    if description_tag:
+                        job_description = description_tag.get_text(strip=True)
+
+                    work_mode_tag = job.find("div", class_="jobType")
+                    if work_mode_tag:
+                        work_mode = work_mode_tag.get_text(strip=True)
 
                     # Skip duplicate job postings
                     if link in seen_links:
@@ -95,6 +112,10 @@ class RemoteOKScraper:
                         "location": location,
                         "skills": skills,
                         "link": link,
+                        "salary": salary,
+                        "posted_date": posted_date,
+                        "work_mode": work_mode,
+                        "job_description": job_description,
                         "scraped_timestamp": scraped_timestamp
                     }
 

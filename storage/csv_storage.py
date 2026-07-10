@@ -21,6 +21,10 @@ class CSVStorage:
                     "location",
                     "skills",
                     "link",
+                    "salary",
+                    "posted_date",
+                    "work_mode",
+                    "job_description",
                     "scraped_timestamp"
                 ]
             )
@@ -36,6 +40,10 @@ class CSVStorage:
                     "location": job["location"],
                     "skills": ", ".join(job["skills"]),
                     "link": job["link"],
+                    "salary": job["salary"],
+                    "posted_date": job["posted_date"],
+                    "work_mode": job["work_mode"],
+                    "job_description": job["job_description"],
                     "scraped_timestamp": job["scraped_timestamp"]
                 })
 

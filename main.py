@@ -2,6 +2,7 @@ from scraper.remoteok_scraper import RemoteOKScraper
 from storage.csv_storage import CSVStorage
 from storage.sqlite_storage import SQLiteStorage
 from storage.json_storage import JSONStorage
+from storage.excel_storage import ExcelStorage
 
 from utils.logger import get_logger
 
@@ -36,6 +37,11 @@ def main():
         json_storage.save(jobs, f"{keyword}_jobs.json")
 
         logger.info("JSON exported successfully")
+
+        excel_storage = ExcelStorage()
+        excel_storage.save(jobs, f"{keyword}_jobs.xlsx")
+
+        logger.info("Excel exported successfully")
 
     except Exception:
 

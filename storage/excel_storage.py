@@ -24,6 +24,10 @@ class ExcelStorage:
             "Location",
             "Skills",
             "Link",
+            "Salary",
+            "Posted Date",
+            "Work Mode",
+            "Job Description",
             "Scraped Timestamp"
         ])
 
@@ -36,6 +40,10 @@ class ExcelStorage:
                 job["location"],
                 ", ".join(job["skills"]),
                 job["link"],
+                job["salary"],
+                job["posted_date"],
+                job["work_mode"],
+                job["job_description"],
                 job["scraped_timestamp"]
             ])
 
