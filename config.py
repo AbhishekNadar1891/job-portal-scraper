@@ -1,4 +1,4 @@
-BASE_URL = "https://www.naukri.com/python-development-jobs-in-bengaluru?k=python%20development&l=bengaluru"
+BASE_URL = "https://www.naukri.com/python-jobs?k=python"
 
 HEADERS = {
     "User-Agent": (
