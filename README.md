@@ -9,7 +9,7 @@ A modular Python-based web scraper that extracts job listings from Naukri using 
 - Dynamic keyword-based job search
 - Multi-page scraping
 - Selenium for JavaScript-rendered pages
-- BeautifulSoup (lxml parser) for HTML parsing
+- BeautifulSoup with lxml parser for HTML parsing
 - CSV export
 - JSON export
 - Excel (.xlsx) export
@@ -25,9 +25,9 @@ A modular Python-based web scraper that extracts job listings from Naukri using 
   - Experience
   - Location
   - Skills
-  - Salary (when available)
+  - Salary, when available
   - Posted Date
-  - Work Mode
+  - Work Mode, when available
   - Job Description
   - Job URL
   - Scraped Timestamp
@@ -54,46 +54,46 @@ A modular Python-based web scraper that extracts job listings from Naukri using 
 
 ```text
 job-portal-scraper/
-│
-├── main.py
-├── config.py
-├── requirements.txt
-├── README.md
-│
-├── scraper/
-│   ├── http_client.py
-│   └── remoteok_scraper.py
-│
-├── storage/
-│   ├── csv_storage.py
-│   ├── json_storage.py
-│   ├── excel_storage.py
-│   └── sqlite_storage.py
-│
-├── utils/
-│   ├── job_filter.py
-│   └── logger.py
-│
-└── output/
+|-- main.py
+|-- config.py
+|-- requirements.txt
+|-- README.md
+|-- naukri_sample.html
+|
+|-- scraper/
+|   |-- http_client.py
+|   `-- naukri_scraper.py
+|
+|-- storage/
+|   |-- csv_storage.py
+|   |-- json_storage.py
+|   |-- excel_storage.py
+|   `-- sqlite_storage.py
+|
+|-- utils/
+|   |-- job_filter.py
+|   `-- logger.py
+|
+`-- output/
 ```
 
 ---
 
 ## Installation
 
-Clone the repository
+Clone the repository:
 
 ```bash
 git clone <repository-url>
 ```
 
-Move into the project directory
+Move into the project directory:
 
 ```bash
 cd job-portal-scraper
 ```
 
-Install the required dependencies
+Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -103,7 +103,7 @@ pip install -r requirements.txt
 
 ## Running the Project
 
-Start the scraper using
+Start the scraper:
 
 ```bash
 python main.py
@@ -170,8 +170,16 @@ The application logs important events including:
 Logs are stored in:
 
 ```text
-scraper.log
+output/scraper.log
 ```
+
+---
+
+## Scraping Approach and Limitations
+
+Naukri search results are JavaScript-rendered, so Selenium is used to load each page before parsing the final HTML with BeautifulSoup. The scraper runs pages sequentially because the assignment scope is small and sequential navigation is more stable and respectful for a public job portal than opening multiple browser sessions.
+
+Use this scraper responsibly and review Naukri's Terms of Service before running it at scale. The extracted fields depend on what Naukri exposes on the search results page, so optional fields such as salary, work mode, and employment type may be unavailable for some listings.
 
 ---
 
@@ -180,7 +188,6 @@ scraper.log
 Possible enhancements include:
 
 - Support for additional job portals
-- Concurrent scraping of job detail pages
 - Configurable output formats
 - Advanced filtering options
 - Scheduled scraping

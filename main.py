@@ -11,9 +11,16 @@ logger = get_logger(__name__)
 
 def main():
 
+    scraper = None
+
     try:
 
         keyword = input("Enter job keyword: ").strip().lower()
+
+        if not keyword:
+            print("Keyword cannot be empty. Please enter a valid job keyword.")
+            logger.warning("Scraping stopped because an empty keyword was provided")
+            return
 
         logger.info(f"Started scraping for keyword: {keyword}")
 
@@ -22,10 +29,6 @@ def main():
         jobs = scraper.scrape(keyword)
 
         logger.info(f"Scraped {len(jobs)} jobs")
-
-        scraper.client.close()
-
-        logger.info("Browser closed")
 
         csv_storage = CSVStorage()
         csv_storage.save(jobs, f"{keyword}_jobs.csv")
@@ -52,6 +55,16 @@ def main():
         logger.exception("Unexpected error occurred")
 
         raise
+
+    finally:
+
+        if scraper is not None:
+
+            try:
+                scraper.client.close()
+                logger.info("Browser closed")
+            except Exception:
+                logger.exception("Failed to close browser")
 
 
 if __name__ == "__main__":

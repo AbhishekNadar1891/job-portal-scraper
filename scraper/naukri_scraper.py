@@ -9,6 +9,36 @@ from utils.logger import get_logger
 logger = get_logger(__name__)
 
 
+WORK_MODE_LOCATIONS = (
+    "Remote",
+    "Hybrid",
+    "Work From Home",
+    "Work from Home",
+    "Work From Office",
+    "Work from Office",
+    "On-site",
+    "Onsite"
+)
+
+
+def infer_work_mode_from_location(location):
+    normalized_location = location.lower()
+
+    for work_mode in WORK_MODE_LOCATIONS:
+        normalized_work_mode = work_mode.lower()
+
+        if normalized_location == normalized_work_mode:
+            return work_mode
+
+        if (
+            normalized_location.startswith(f"{normalized_work_mode} -")
+            or normalized_location.startswith(f"{normalized_work_mode}-")
+        ):
+            return work_mode
+
+    return None
+
+
 class NaukriScraper:
 
     def __init__(self):
@@ -64,7 +94,7 @@ class NaukriScraper:
 
                     salary = "N/A"
                     posted_date = "N/A"
-                    work_mode = "N/A"
+                    work_mode = "Not specified"
                     job_description = "N/A"
 
                     title_tag = job.find("a", class_="title")
@@ -105,6 +135,10 @@ class NaukriScraper:
                     work_mode_tag = job.find("div", class_="jobType")
                     if work_mode_tag:
                         work_mode = work_mode_tag.get_text(strip=True)
+
+                    inferred_work_mode = infer_work_mode_from_location(location)
+                    if inferred_work_mode:
+                        work_mode = inferred_work_mode
 
                     # Skip duplicate job postings
                     if link in seen_links:

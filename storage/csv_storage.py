@@ -1,14 +1,16 @@
 import csv
 import os
 
+from config import OUTPUT_DIR
+
 
 class CSVStorage:
 
     def save(self, jobs, filename):
 
-        os.makedirs("output", exist_ok=True)
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-        filepath = os.path.join("output", filename)
+        filepath = os.path.join(OUTPUT_DIR, filename)
 
         with open(filepath, "w", newline="", encoding="utf-8") as file:
 
