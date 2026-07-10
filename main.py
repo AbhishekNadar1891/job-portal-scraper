@@ -1,4 +1,5 @@
 import requests
+from bs4 import BeautifulSoup
 
 
 def main():
@@ -6,15 +7,24 @@ def main():
 
     try:
         response = requests.get(url, timeout=10)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "lxml")
 
         print("=" * 50)
-        print(f"Status Code : {response.status_code}")
-        print(f"Reason      : {response.reason}")
-        print(f"URL         : {response.url}")
-        print("=" * 50)
+        print("TITLE")
+        print(soup.title.text)
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
+        print("=" * 50)
+        print("H1")
+        print(soup.find("h1").text)
+
+        print("=" * 50)
+        print("P")
+        print(soup.find("p").text)
+
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
