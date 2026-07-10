@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
+from urllib.parse import quote, quote_plus
 
 from scraper.base_scraper import BaseScraper
 from scraper.http_client import HttpClient
@@ -40,6 +41,23 @@ def infer_work_mode_from_location(location):
     return None
 
 
+def build_naukri_search_url(keyword, page):
+    route_keyword = "-".join(keyword.split())
+    encoded_route_keyword = quote(route_keyword)
+    encoded_query_keyword = quote_plus(keyword)
+
+    if page == 1:
+        return (
+            f"https://www.naukri.com/{encoded_route_keyword}-jobs"
+            f"?k={encoded_query_keyword}"
+        )
+
+    return (
+        f"https://www.naukri.com/{encoded_route_keyword}-jobs-{page}"
+        f"?k={encoded_query_keyword}"
+    )
+
+
 class NaukriScraper(BaseScraper):
 
     def __init__(self):
@@ -52,20 +70,11 @@ class NaukriScraper(BaseScraper):
 
         scraped_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # Build the search URL dynamically
-        base_url = f"https://www.naukri.com/{keyword}-jobs?k={keyword}"
-
         for page in range(1, MAX_PAGES + 1):
 
             try:
 
-                if page == 1:
-                    url = base_url
-                else:
-                    url = base_url.replace(
-                        f"{keyword}-jobs",
-                        f"{keyword}-jobs-{page}"
-                    )
+                url = build_naukri_search_url(keyword, page)
 
                 print(f"\nScraping Page {page}")
                 print(url)

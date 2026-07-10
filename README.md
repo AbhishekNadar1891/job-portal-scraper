@@ -247,7 +247,7 @@ Known limitations:
 
 - Employment type is included in every output and defaults to `Not specified` when it is not visible on the Naukri search result card.
 - Job descriptions are extracted from the search result snippet, not from each full job detail page.
-- Keyword handling is intended for simple text keywords such as `python`, `java`, or `django`.
+- Keywords are URL-encoded before building Naukri search URLs, including spaces and special characters.
 - The scraper depends on Naukri's current HTML structure, so selector changes on the website may require code updates.
 
 ---
