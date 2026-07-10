@@ -60,6 +60,8 @@ job-portal-scraper/
 |-- requirements.txt
 |-- README.md
 |-- naukri_sample.html
+|-- samples/
+|   `-- python_jobs_sample.csv
 |
 |-- scraper/
 |   |-- __init__.py
@@ -158,6 +160,12 @@ output/python_jobs.json
 output/python_jobs.xlsx
 output/jobs.db
 output/scraper.log
+```
+
+The repository also includes a small tracked sample output file for review:
+
+```text
+samples/python_jobs_sample.csv
 ```
 
 Sample CSV columns:
