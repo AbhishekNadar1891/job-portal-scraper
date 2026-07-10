@@ -1,5 +1,7 @@
 from scraper.remoteok_scraper import RemoteOKScraper
 from storage.csv_storage import CSVStorage
+from storage.sqlite_storage import SQLiteStorage
+from storage.json_storage import JSONStorage
 
 from utils.logger import get_logger
 
@@ -20,11 +22,15 @@ def main():
 
         logger.info(f"Scraped {len(jobs)} jobs")
 
-        storage = CSVStorage()
-
-        storage.save(jobs, f"{keyword}_jobs.csv")
+        csv_storage = CSVStorage()
+        csv_storage.save(jobs, f"{keyword}_jobs.csv")
 
         logger.info("CSV exported successfully")
+
+        sqlite_storage = SQLiteStorage()
+        sqlite_storage.save(jobs, "jobs.db")
+
+        logger.info("SQLite database updated successfully")
 
     except Exception:
 
