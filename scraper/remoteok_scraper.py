@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 from scraper.http_client import HttpClient
 from config import MAX_PAGES
@@ -17,6 +18,8 @@ class RemoteOKScraper:
 
         all_jobs = []
         seen_links = set()
+
+        scraped_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # Build the search URL dynamically
         base_url = f"https://www.naukri.com/{keyword}-jobs?k={keyword}"
@@ -91,7 +94,8 @@ class RemoteOKScraper:
                         "experience": experience,
                         "location": location,
                         "skills": skills,
-                        "link": link
+                        "link": link,
+                        "scraped_timestamp": scraped_timestamp
                     }
 
                     all_jobs.append(job_data)
