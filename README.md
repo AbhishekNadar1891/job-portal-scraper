@@ -290,6 +290,7 @@ The scraper extracts data from Naukri search result cards. Some fields may not a
 - The scraper depends on Naukri's current HTML structure, so selector changes on the website may require code updates.
 - The scraper does not visit every individual job detail page.
 - The scraper does not bypass CAPTCHA, login walls, or anti-bot restrictions.
+- Concurrency or parallel scraping is intentionally not used to avoid sending aggressive automated traffic and to stay respectful of Naukri's Terms of Service and usage policies.
 - No automated test suite is currently included; validation was done manually.
 
 ---
