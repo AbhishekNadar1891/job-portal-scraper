@@ -2,6 +2,8 @@
 
 A modular Python-based web scraper that extracts job listings from Naukri using Selenium and BeautifulSoup. The scraper supports multi-page scraping, multiple export formats, logging, retry mechanisms, duplicate detection, and incremental data storage using SQLite.
 
+This project was built as a data science internship assignment to demonstrate web scraping, structured data extraction, data export, and basic robustness practices.
+
 ---
 
 ## Features
@@ -37,7 +39,7 @@ A modular Python-based web scraper that extracts job listings from Naukri using 
 
 ## Technologies Used
 
-- Python 3.x
+- Python 3.10+
 - Selenium
 - BeautifulSoup4
 - lxml
@@ -90,7 +92,7 @@ job-portal-scraper/
 
 Prerequisites:
 
-- Python 3.x
+- Python 3.10 or newer
 - Google Chrome browser
 - Internet connection for `webdriver-manager` to download or locate the matching ChromeDriver
 
@@ -130,12 +132,13 @@ Example:
 Enter job keyword: python
 ```
 
-The scraper automatically:
+After entering a keyword, the scraper automatically:
 
-- Scrapes multiple pages
-- Extracts job details
-- Removes duplicate records
-- Stores results in multiple formats
+- Builds Naukri search URLs for multiple pages
+- Loads each page using Selenium
+- Parses job cards using BeautifulSoup
+- Removes duplicate jobs by URL
+- Exports results to CSV, JSON, Excel, and SQLite
 
 ---
 
@@ -185,6 +188,8 @@ Python Developer,Persistent,3-7 Yrs,Bengaluru,"python development, css, bootstra
 ## SQLite Database
 
 The SQLite database stores job listings while preventing duplicate entries using the job URL as a unique identifier.
+
+Incremental scraping is supported through SQLite. The `link` field is stored as unique, so jobs already present in `jobs.db` are ignored on later runs. CSV, JSON, and Excel files are regenerated for each run.
 
 Stored fields:
 
@@ -243,20 +248,37 @@ A scraper run creates CSV, JSON, Excel, SQLite, and log outputs in the `output/`
 
 ---
 
-## Scraping Approach and Limitations
+## Scraping Approach
 
-Naukri search results are JavaScript-rendered, so Selenium is used to load each page before parsing the final HTML with BeautifulSoup. The scraper runs pages sequentially because the assignment scope is small and sequential navigation is more stable and respectful for a public job portal than opening multiple browser sessions.
+Naukri search results are JavaScript-rendered, so Selenium is used to load each page before parsing the final HTML with BeautifulSoup.
+
+The scraper runs pages sequentially because the configured page count is small and Selenium browser automation is heavier than plain HTTP requests. Sequential scraping is simpler, stable, and more respectful for a public job portal than opening multiple browser sessions.
 
 The scraper module includes a small `BaseScraper` contract so additional portals can be added later while returning the same structured job fields used by the existing storage classes.
 
 Use this scraper responsibly and review Naukri's Terms of Service before running it at scale. The extracted fields depend on what Naukri exposes on the search results page, so optional fields such as salary, work mode, and employment type may be unavailable for some listings.
 
-Known limitations:
+---
 
-- Employment type is included in every output and defaults to `Not specified` when it is not visible on the Naukri search result card.
-- Job descriptions are extracted from the search result snippet, not from each full job detail page.
+## Data Limitations
+
+The scraper extracts data from Naukri search result cards. Some fields may not always be available on the listing card.
+
+- Employment type is not always exposed on Naukri search results, so it defaults to `Not specified`.
+- Work mode is only populated when explicitly visible or strongly inferable, such as `Remote` or `Work From Home`.
+- A company or job location alone is not treated as proof of remote, hybrid, or office work.
+- Job descriptions are extracted from search result snippets, not full detail pages.
+- Salary may be unavailable for some listings and is saved as `N/A`.
+
+---
+
+## Known Limitations
+
 - Keywords are URL-encoded before building Naukri search URLs, including spaces and special characters.
 - The scraper depends on Naukri's current HTML structure, so selector changes on the website may require code updates.
+- The scraper does not visit every individual job detail page.
+- The scraper does not bypass CAPTCHA, login walls, or anti-bot restrictions.
+- No automated test suite is currently included; validation was done manually.
 
 ---
 
