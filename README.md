@@ -276,7 +276,7 @@ Use this scraper responsibly and review Naukri's Terms of Service before running
 
 The scraper extracts data from Naukri search result cards. Some fields may not always be available on the listing card.
 
-- Employment type is saved as `Not specified` unless it is explicitly visible in the listing data. Many postings may be full-time by default, but the scraper avoids assuming this when Naukri does not provide a clear employment type.
+- Employment type is saved as `Not specified` unless it is explicitly available in the Naukri listing data. In many cases, Naukri does not expose this field reliably even on the job detail page. Inferring it from company career pages would require scraping external company websites, which is outside the scope of this assignment.
 - Work mode is only populated when explicitly visible or strongly inferable, such as `Remote` or `Work From Home`.
 - A company or job location alone is not treated as proof of remote, hybrid, or office work.
 - Job descriptions are extracted from search result snippets, not full detail pages.
