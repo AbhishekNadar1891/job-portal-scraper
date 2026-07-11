@@ -260,6 +260,22 @@ A scraper run creates CSV, JSON, Excel, SQLite, and log outputs in the `output/`
 
 ---
 
+## Assignment Coverage
+
+This project covers the main assignment requirements:
+
+- Scrapes job postings from Naukri
+- Handles multiple result pages
+- Avoids duplicate records using job URLs
+- Uses retry logic and page-level error handling
+- Exports data to CSV, JSON, Excel, and SQLite
+- Stores structured fields such as title, company, location, experience, salary, skills, posted date, job URL, and scraped timestamp
+- Supports incremental scraping through SQLite
+- Uses a modular folder structure for scraping, storage, configuration, and utilities
+- Documents setup, execution, output formats, screenshots, and known data limitations
+
+---
+
 ## Scraping Approach
 
 Naukri search results are JavaScript-rendered, so Selenium is used to load each page before parsing the final HTML with BeautifulSoup.
