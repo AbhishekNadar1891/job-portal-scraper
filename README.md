@@ -228,11 +228,23 @@ output/scraper.log
 
 ## Screenshots
 
-Terminal execution screenshot:
+Terminal execution:
 
-```text
-screenshots/terminal_run.png
-```
+![Terminal run showing pagination and exported files](screenshots/terminal_run.png)
+
+This screenshot shows the scraper running for a keyword, scraping multiple Naukri pages, and exporting CSV, JSON, Excel, and SQLite outputs.
+
+CSV output:
+
+![CSV output with scraped job records](screenshots/result_csv.png)
+
+JSON output:
+
+![JSON output with structured job fields](screenshots/result_json.png)
+
+SQLite database output:
+
+![SQLite database output with stored job records](screenshots/result_db.png)
 
 ---
 
@@ -264,7 +276,7 @@ Use this scraper responsibly and review Naukri's Terms of Service before running
 
 The scraper extracts data from Naukri search result cards. Some fields may not always be available on the listing card.
 
-- Employment type is not always exposed on Naukri search results, so it defaults to `Not specified`.
+- Employment type is saved as `Not specified` unless it is explicitly visible in the listing data. Many postings may be full-time by default, but the scraper avoids assuming this when Naukri does not provide a clear employment type.
 - Work mode is only populated when explicitly visible or strongly inferable, such as `Remote` or `Work From Home`.
 - A company or job location alone is not treated as proof of remote, hybrid, or office work.
 - Job descriptions are extracted from search result snippets, not full detail pages.
